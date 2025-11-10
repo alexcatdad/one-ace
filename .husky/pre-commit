@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+
+echo "Running Biome lint..."
+bun run lint

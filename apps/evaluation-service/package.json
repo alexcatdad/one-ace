@@ -1,0 +1,11 @@
+{
+  "name": "@ace/evaluation-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.3.1"
+  }
+}

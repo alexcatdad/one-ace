@@ -1,0 +1,29 @@
+{
+  "name": "one-ace",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "biome check --write .",
+    "typecheck": "tsc --noEmit",
+    "build": "bun run typecheck",
+    "test": "bun test",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "hono": "^4.3.1",
+    "zod": "4.1.12"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "2.3.4",
+    "@types/bun": "latest",
+    "husky": "9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
