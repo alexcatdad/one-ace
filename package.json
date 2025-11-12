@@ -20,8 +20,7 @@
   ],
   "devDependencies": {
     "@biomejs/biome": "2.3.4",
-    "@types/bun": "latest",
-    "husky": "9"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
