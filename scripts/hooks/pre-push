@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# Pre-push hook: Run lint and build before allowing push
+#
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo "${YELLOW}Running pre-push checks...${NC}"
+
+# Run lint check (without --write to avoid modifying files during push)
+echo "${YELLOW}Running lint check...${NC}"
+if ! bun run biome check .; then
+    echo "${RED}❌ Lint check failed!${NC}"
+    echo "${YELLOW}Run 'bun run lint' to auto-fix issues.${NC}"
+    exit 1
+fi
+echo "${GREEN}✓ Lint check passed${NC}"
+
+# Run build/typecheck
+echo "${YELLOW}Running build...${NC}"
+if ! bun run build; then
+    echo "${RED}❌ Build failed!${NC}"
+    exit 1
+fi
+echo "${GREEN}✓ Build passed${NC}"
+
+echo "${GREEN}✓ All pre-push checks passed${NC}"
+exit 0
+
