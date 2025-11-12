@@ -8,7 +8,7 @@
     "typecheck": "tsc --noEmit",
     "build": "bun run typecheck",
     "test": "bun test",
-    "prepare": "husky"
+    "prepare": "git config core.hooksPath scripts/hooks || true"
   },
   "dependencies": {
     "hono": "^4.3.1",
