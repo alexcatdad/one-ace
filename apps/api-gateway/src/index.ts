@@ -88,6 +88,30 @@ app.get('/jobs/:jobId', async (c: Context) => {
   }
 });
 
+// Proxy to inference service
+app.post('/workflow/run', async (c: Context) => {
+  const inferenceUrl = Bun.env.INFERENCE_SERVICE_URL || 'http://localhost:3100';
+  const body = await c.req.json();
+
+  try {
+    const response = await fetch(`${inferenceUrl}/workflow/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return c.json(data, 200);
+    }
+    return c.json(data, 500);
+  } catch (error) {
+    logger.error('Error proxying to inference service', { error });
+    return c.json({ error: 'Inference service unavailable' }, 503);
+  }
+});
+
 const port = Number(Bun.env.API_GATEWAY_PORT ?? 3000);
 
 Bun.serve({
