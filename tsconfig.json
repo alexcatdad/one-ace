@@ -33,5 +33,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["apps", "packages", "index.ts", "specs", "artifacts"]
+  "include": ["apps", "packages", "index.ts", "specs", "artifacts"],
+  "exclude": ["apps/web-ui"]
 }
