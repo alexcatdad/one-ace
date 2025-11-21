@@ -29,7 +29,10 @@
     "apps/evaluation-service": {
       "name": "@ace/evaluation-service",
       "dependencies": {
+        "@ace/core-types": "workspace:*",
+        "@ace/shared-logging": "workspace:*",
         "hono": "^4.3.1",
+        "ollama": "^0.5.0",
       },
     },
     "apps/inference-service": {
@@ -47,8 +50,8 @@
       },
     },
     "apps/web-ui": {
-      "name": "web-ui",
-      "version": "0.0.0",
+      "name": "@ace/web-ui",
+      "version": "1.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.90.10",
         "axios": "^1.13.2",
@@ -126,6 +129,8 @@
     "@ace/shared-logging": ["@ace/shared-logging@workspace:packages/shared-logging"],
 
     "@ace/vector-client": ["@ace/vector-client@workspace:packages/vector-client"],
+
+    "@ace/web-ui": ["@ace/web-ui@workspace:apps/web-ui"],
 
     "@babel/code-frame": ["@babel/code-frame@7.27.1", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.27.1", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg=="],
 
@@ -734,8 +739,6 @@
     "uuid": ["uuid@10.0.0", "", { "bin": { "uuid": "dist/bin/uuid" } }, "sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ=="],
 
     "vite": ["vite@7.2.4", "", { "dependencies": { "esbuild": "^0.25.0", "fdir": "^6.5.0", "picomatch": "^4.0.3", "postcss": "^8.5.6", "rollup": "^4.43.0", "tinyglobby": "^0.2.15" }, "optionalDependencies": { "fsevents": "~2.3.3" }, "peerDependencies": { "@types/node": "^20.19.0 || >=22.12.0", "jiti": ">=1.21.0", "less": "^4.0.0", "lightningcss": "^1.21.0", "sass": "^1.70.0", "sass-embedded": "^1.70.0", "stylus": ">=0.54.8", "sugarss": "^5.0.0", "terser": "^5.16.0", "tsx": "^4.8.1", "yaml": "^2.4.2" }, "optionalPeers": ["@types/node", "jiti", "less", "lightningcss", "sass", "sass-embedded", "stylus", "sugarss", "terser", "tsx", "yaml"], "bin": { "vite": "bin/vite.js" } }, "sha512-NL8jTlbo0Tn4dUEXEsUg8KeyG/Lkmc4Fnzb8JXN/Ykm9G4HNImjtABMJgkQoVjOBN/j2WAwDTRytdqJbZsah7w=="],
-
-    "web-ui": ["web-ui@workspace:apps/web-ui"],
 
     "whatwg-fetch": ["whatwg-fetch@3.6.20", "", {}, "sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg=="],
 

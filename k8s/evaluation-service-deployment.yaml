@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: evaluation-service-service
+  namespace: ace
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3300
+      targetPort: 3300
+  selector:
+    app: evaluation-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evaluation-service
+  namespace: ace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evaluation-service
+  template:
+    metadata:
+      labels:
+        app: evaluation-service
+    spec:
+      containers:
+        - name: evaluation-service
+          image: ace-evaluation-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3300
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ace-config
+            - secretRef:
+                name: ace-secrets
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3300
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3300
+            initialDelaySeconds: 10
+            periodSeconds: 5

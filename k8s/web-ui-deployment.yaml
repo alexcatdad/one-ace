@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-ui-service
+  namespace: ace
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: web-ui
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-ui
+  namespace: ace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-ui
+  template:
+    metadata:
+      labels:
+        app: web-ui
+    spec:
+      containers:
+        - name: web-ui
+          image: ace-web-ui:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3500
+              name: http
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: VITE_API_URL
+              value: "https://ace.yourdomain.com/api"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3500
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3500
+            initialDelaySeconds: 10
+            periodSeconds: 5
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-ui-hpa
+  namespace: ace
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-ui
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
