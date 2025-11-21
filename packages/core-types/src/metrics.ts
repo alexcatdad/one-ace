@@ -12,7 +12,7 @@ export const LatencyMetricsSchema = z.object({
   startTime: z.number(),
   endTime: z.number(),
   durationMs: z.number(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type LatencyMetrics = z.infer<typeof LatencyMetricsSchema>;
@@ -56,7 +56,7 @@ export type AgentMetrics = z.infer<typeof AgentMetricsSchema>;
 // Neo4j Query Performance
 export const Neo4jQueryMetricsSchema = z.object({
   query: z.string(),
-  parameters: z.record(z.unknown()),
+  parameters: z.record(z.string(), z.unknown()),
   executionTimeMs: z.number(),
   recordsReturned: z.number(),
   timestamp: z.string(),
