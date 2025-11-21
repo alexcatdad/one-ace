@@ -38,7 +38,7 @@ export async function runEvaluation(request: EvaluationRequest): Promise<Evaluat
     );
 
     // Run answer accuracy if expected output provided
-    let answerAccuracy;
+    let answerAccuracy: Awaited<ReturnType<typeof evaluateAnswerAccuracy>> | undefined;
     if (request.expectedOutput) {
       answerAccuracy = await evaluateAnswerAccuracy(
         request.generatedText,
@@ -51,25 +51,31 @@ export async function runEvaluation(request: EvaluationRequest): Promise<Evaluat
     // Faithfulness is most important (60%), Evidence Coverage (30%), Answer Accuracy (10%)
     let overallScore = faithfulness.score * 0.6 + evidenceCoverage.score * 0.3;
     if (answerAccuracy) {
-      overallScore = faithfulness.score * 0.5 + evidenceCoverage.score * 0.3 + answerAccuracy.score * 0.2;
+      overallScore =
+        faithfulness.score * 0.5 + evidenceCoverage.score * 0.3 + answerAccuracy.score * 0.2;
     }
 
     // Determine pass/fail
     const faithfulnessThreshold = 0.97;
     const coverageThreshold = 0.8;
     const passed =
-      faithfulness.score >= faithfulnessThreshold &&
-      evidenceCoverage.score >= coverageThreshold;
+      faithfulness.score >= faithfulnessThreshold && evidenceCoverage.score >= coverageThreshold;
 
     // Add warnings for borderline scores
     if (faithfulness.score < faithfulnessThreshold) {
-      errors.push(`Faithfulness score ${faithfulness.score.toFixed(3)} below threshold ${faithfulnessThreshold}`);
+      errors.push(
+        `Faithfulness score ${faithfulness.score.toFixed(3)} below threshold ${faithfulnessThreshold}`,
+      );
     }
     if (faithfulness.score >= faithfulnessThreshold && faithfulness.score < 0.99) {
-      warnings.push(`Faithfulness score ${faithfulness.score.toFixed(3)} is passing but close to threshold`);
+      warnings.push(
+        `Faithfulness score ${faithfulness.score.toFixed(3)} is passing but close to threshold`,
+      );
     }
     if (evidenceCoverage.score < coverageThreshold) {
-      errors.push(`Evidence coverage ${evidenceCoverage.score.toFixed(3)} below threshold ${coverageThreshold}`);
+      errors.push(
+        `Evidence coverage ${evidenceCoverage.score.toFixed(3)} below threshold ${coverageThreshold}`,
+      );
     }
 
     const result: EvaluationResult = {
@@ -111,7 +117,9 @@ export async function loadGoldenDataset(version = 'v1'): Promise<GoldenTestCase[
     return content.testCases as GoldenTestCase[];
   } catch (error) {
     logger.error('Failed to load golden dataset', { version, error });
-    throw new Error(`Failed to load golden dataset: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to load golden dataset: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
   }
 }
 
@@ -170,7 +178,9 @@ export async function runRegressionTests(version = 'v1'): Promise<RegressionRepo
             evaluationTimeMs: 0,
           },
           overallScore: 0,
-          errors: [`Test execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
+          errors: [
+            `Test execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          ],
           warnings: [],
           evaluationTimeMs: 0,
           timestamp: new Date().toISOString(),
@@ -187,8 +197,7 @@ export async function runRegressionTests(version = 'v1'): Promise<RegressionRepo
       results.reduce((sum, r) => sum + r.faithfulness.score, 0) / totalTests;
     const averageEvidenceCoverage =
       results.reduce((sum, r) => sum + r.evidenceCoverage.score, 0) / totalTests;
-    const averageOverallScore =
-      results.reduce((sum, r) => sum + r.overallScore, 0) / totalTests;
+    const averageOverallScore = results.reduce((sum, r) => sum + r.overallScore, 0) / totalTests;
 
     // Determine recommendation
     const criticalFailures = results

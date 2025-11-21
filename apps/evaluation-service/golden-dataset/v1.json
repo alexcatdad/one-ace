@@ -19,7 +19,12 @@
       "input": {
         "query": "What resources does the Crimson Empire control?",
         "context": "The Crimson Empire, ruled by Emperor Valen, controls the Ruby Mines in the Bloodstone Mountains. These mines produce approximately 500kg of high-grade rubies annually. The empire also controls the trade routes through the Scarlet Pass, generating significant tariff revenue. Historical records show that Emperor Valen annexed the Ruby Mines in Year 1205 after the Treaty of Red Dawn.",
-        "expectedEntities": ["Crimson Empire", "Emperor Valen", "Ruby Mines", "Bloodstone Mountains"],
+        "expectedEntities": [
+          "Crimson Empire",
+          "Emperor Valen",
+          "Ruby Mines",
+          "Bloodstone Mountains"
+        ],
         "expectedRelationships": ["CONTROLS_RESOURCE", "RULES"]
       },
       "expectedOutput": {
@@ -30,11 +35,7 @@
           "trade routes",
           "Scarlet Pass"
         ],
-        "mustNotInclude": [
-          "Diamond Mines",
-          "Silver Mountains",
-          "false information"
-        ],
+        "mustNotInclude": ["Diamond Mines", "Silver Mountains", "false information"],
         "minFaithfulness": 0.97,
         "minEvidenceCoverage": 0.85
       },
@@ -56,20 +57,10 @@
         "expectedRelationships": ["IS_RIVAL_OF"]
       },
       "expectedOutput": {
-        "mustInclude": [
-          "rival",
-          "War of Two Banners",
-          "Peace Accord",
-          "border",
-          "tensions"
-        ],
-        "mustNotInclude": [
-          "allies",
-          "friends",
-          "trade agreement"
-        ],
+        "mustInclude": ["rival", "War of Two Banners", "Peace Accord", "border", "tensions"],
+        "mustNotInclude": ["allies", "friends", "trade agreement"],
         "minFaithfulness": 0.98,
-        "minEvidenceCoverage": 0.90
+        "minEvidenceCoverage": 0.9
       },
       "metadata": {
         "createdBy": "ace-team",
@@ -96,11 +87,7 @@
           "divination magic",
           "Peace Accord"
         ],
-        "mustNotInclude": [
-          "Crimson Empire",
-          "warrior",
-          "human"
-        ],
+        "mustNotInclude": ["Crimson Empire", "warrior", "human"],
         "minFaithfulness": 0.97,
         "minEvidenceCoverage": 0.85
       },
@@ -129,13 +116,9 @@
           "Peace Accord",
           "Lyra Moonwhisper"
         ],
-        "mustNotInclude": [
-          "2000-year war",
-          "peaceful resolution",
-          "no casualties"
-        ],
+        "mustNotInclude": ["2000-year war", "peaceful resolution", "no casualties"],
         "minFaithfulness": 0.98,
-        "minEvidenceCoverage": 0.90
+        "minEvidenceCoverage": 0.9
       },
       "metadata": {
         "createdBy": "ace-team",
@@ -155,15 +138,8 @@
         "expectedRelationships": []
       },
       "expectedOutput": {
-        "mustInclude": [
-          "no information",
-          "not found",
-          "unknown"
-        ],
-        "mustNotInclude": [
-          "definitely",
-          "capital is"
-        ],
+        "mustInclude": ["no information", "not found", "unknown"],
+        "mustNotInclude": ["definitely", "capital is"],
         "minFaithfulness": 1.0,
         "minEvidenceCoverage": 1.0
       },
@@ -191,11 +167,7 @@
           "Imperial Mining Regiment",
           "2000 feet"
         ],
-        "mustNotInclude": [
-          "Azure Kingdom",
-          "underwater",
-          "abandoned"
-        ],
+        "mustNotInclude": ["Azure Kingdom", "underwater", "abandoned"],
         "minFaithfulness": 0.97,
         "minEvidenceCoverage": 0.85
       },
@@ -217,17 +189,10 @@
         "expectedRelationships": ["RULES"]
       },
       "expectedOutput": {
-        "mustInclude": [
-          "Emperor Valen",
-          "1200",
-          "50 years old"
-        ],
-        "mustNotInclude": [
-          "Emperor Marcus",
-          "currently rules"
-        ],
+        "mustInclude": ["Emperor Valen", "1200", "50 years old"],
+        "mustNotInclude": ["Emperor Marcus", "currently rules"],
         "minFaithfulness": 0.98,
-        "minEvidenceCoverage": 0.90
+        "minEvidenceCoverage": 0.9
       },
       "metadata": {
         "createdBy": "ace-team",
@@ -253,13 +218,9 @@
           "elemental magic",
           "water and air"
         ],
-        "mustNotInclude": [
-          "necromancy",
-          "blood magic",
-          "fire magic"
-        ],
+        "mustNotInclude": ["necromancy", "blood magic", "fire magic"],
         "minFaithfulness": 0.98,
-        "minEvidenceCoverage": 0.90
+        "minEvidenceCoverage": 0.9
       },
       "metadata": {
         "createdBy": "ace-team",
@@ -279,12 +240,7 @@
         "expectedRelationships": ["TRADES_WITH"]
       },
       "expectedOutput": {
-        "mustInclude": [
-          "forbidden",
-          "black market",
-          "Emerald Confederacy",
-          "intermediary"
-        ],
+        "mustInclude": ["forbidden", "black market", "Emerald Confederacy", "intermediary"],
         "mustNotInclude": [
           "open trade agreement",
           "peaceful commerce",
@@ -311,18 +267,10 @@
         "expectedRelationships": []
       },
       "expectedOutput": {
-        "mustInclude": [
-          "1195",
-          "15th day of Harvest Moon",
-          "Neutral Highlands"
-        ],
-        "mustNotInclude": [
-          "1180",
-          "1200",
-          "ongoing"
-        ],
+        "mustInclude": ["1195", "15th day of Harvest Moon", "Neutral Highlands"],
+        "mustNotInclude": ["1180", "1200", "ongoing"],
         "minFaithfulness": 0.98,
-        "minEvidenceCoverage": 0.90
+        "minEvidenceCoverage": 0.9
       },
       "metadata": {
         "createdBy": "ace-team",

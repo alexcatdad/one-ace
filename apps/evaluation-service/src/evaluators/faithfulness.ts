@@ -75,8 +75,7 @@ export async function evaluateFaithfulness(
     });
 
     const rawContent = response.message.content;
-    let parsed: unknown;
-    parsed = JSON.parse(rawContent);
+    const parsed: unknown = JSON.parse(rawContent);
 
     const claims = (parsed as { claims?: Array<unknown> }).claims || [];
 
