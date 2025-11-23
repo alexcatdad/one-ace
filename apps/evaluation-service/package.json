@@ -6,6 +6,9 @@
     "start": "bun run src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.3.1"
+    "@ace/core-types": "workspace:*",
+    "@ace/shared-logging": "workspace:*",
+    "hono": "^4.3.1",
+    "ollama": "^0.5.0"
   }
 }

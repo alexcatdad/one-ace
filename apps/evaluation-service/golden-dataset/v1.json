@@ -1,0 +1,283 @@
+{
+  "version": "1.0.0",
+  "description": "Golden Dataset for ACE Regression Testing",
+  "createdAt": "2025-11-21T00:00:00Z",
+  "metadata": {
+    "totalTests": 10,
+    "categories": {
+      "retrieval": 2,
+      "generation": 4,
+      "consistency": 3,
+      "edge_case": 1
+    }
+  },
+  "testCases": [
+    {
+      "id": "GD-001",
+      "version": "1.0.0",
+      "category": "generation",
+      "input": {
+        "query": "What resources does the Crimson Empire control?",
+        "context": "The Crimson Empire, ruled by Emperor Valen, controls the Ruby Mines in the Bloodstone Mountains. These mines produce approximately 500kg of high-grade rubies annually. The empire also controls the trade routes through the Scarlet Pass, generating significant tariff revenue. Historical records show that Emperor Valen annexed the Ruby Mines in Year 1205 after the Treaty of Red Dawn.",
+        "expectedEntities": [
+          "Crimson Empire",
+          "Emperor Valen",
+          "Ruby Mines",
+          "Bloodstone Mountains"
+        ],
+        "expectedRelationships": ["CONTROLS_RESOURCE", "RULES"]
+      },
+      "expectedOutput": {
+        "mustInclude": [
+          "Ruby Mines",
+          "Bloodstone Mountains",
+          "Emperor Valen",
+          "trade routes",
+          "Scarlet Pass"
+        ],
+        "mustNotInclude": ["Diamond Mines", "Silver Mountains", "false information"],
+        "minFaithfulness": 0.97,
+        "minEvidenceCoverage": 0.85
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Basic retrieval and generation test for faction resources",
+        "tags": ["faction", "resources", "basic"]
+      }
+    },
+    {
+      "id": "GD-002",
+      "version": "1.0.0",
+      "category": "consistency",
+      "input": {
+        "query": "Describe the relationship between the Crimson Empire and the Azure Kingdom",
+        "context": "The Crimson Empire and the Azure Kingdom have been bitter rivals since the War of Two Banners (Year 1180-1195). The conflict began over disputed territory in the Neutral Highlands. Despite signing the Peace Accord of 1195, tensions remain high. Both nations maintain military fortifications along their shared border. Trade between the two kingdoms is forbidden by royal decree.",
+        "expectedEntities": ["Crimson Empire", "Azure Kingdom"],
+        "expectedRelationships": ["IS_RIVAL_OF"]
+      },
+      "expectedOutput": {
+        "mustInclude": ["rival", "War of Two Banners", "Peace Accord", "border", "tensions"],
+        "mustNotInclude": ["allies", "friends", "trade agreement"],
+        "minFaithfulness": 0.98,
+        "minEvidenceCoverage": 0.9
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Consistency test for faction relationships",
+        "tags": ["faction", "relationships", "consistency"]
+      }
+    },
+    {
+      "id": "GD-003",
+      "version": "1.0.0",
+      "category": "generation",
+      "input": {
+        "query": "Tell me about the character Lyra Moonwhisper",
+        "context": "Lyra Moonwhisper is a renowned elven mage who serves as the Court Advisor to the Azure Kingdom. Born in Year 1150, she is 75 years old (young for an elf). She specializes in divination magic and is known for her prophetic visions. Lyra played a crucial role in the Peace Accord negotiations, using her foresight to prevent further bloodshed. She resides in the Azure Palace's East Tower.",
+        "expectedEntities": ["Lyra Moonwhisper", "Azure Kingdom"],
+        "expectedRelationships": ["SERVES_FACTION"]
+      },
+      "expectedOutput": {
+        "mustInclude": [
+          "elven mage",
+          "Court Advisor",
+          "Azure Kingdom",
+          "divination magic",
+          "Peace Accord"
+        ],
+        "mustNotInclude": ["Crimson Empire", "warrior", "human"],
+        "minFaithfulness": 0.97,
+        "minEvidenceCoverage": 0.85
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Character description test",
+        "tags": ["character", "generation"]
+      }
+    },
+    {
+      "id": "GD-004",
+      "version": "1.0.0",
+      "category": "consistency",
+      "input": {
+        "query": "What happened during the War of Two Banners?",
+        "context": "The War of Two Banners (1180-1195) was a 15-year conflict between the Crimson Empire and Azure Kingdom over the Neutral Highlands. The war began when Emperor Marcus (Valen's father) claimed ancestral rights to the region. Major battles included the Siege of Highcrest (1182), the Battle of Broken Shields (1187), and the Final Stand at Gray Ridge (1194). The war ended with the Peace Accord of 1195, brokered by the elven diplomat Lyra Moonwhisper. Casualties exceeded 50,000 on both sides.",
+        "expectedEntities": ["War of Two Banners", "Crimson Empire", "Azure Kingdom"],
+        "expectedRelationships": ["PARTICIPATED_IN_EVENT"]
+      },
+      "expectedOutput": {
+        "mustInclude": [
+          "15-year conflict",
+          "1180-1195",
+          "Neutral Highlands",
+          "Peace Accord",
+          "Lyra Moonwhisper"
+        ],
+        "mustNotInclude": ["2000-year war", "peaceful resolution", "no casualties"],
+        "minFaithfulness": 0.98,
+        "minEvidenceCoverage": 0.9
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Historical event consistency test",
+        "tags": ["event", "history", "consistency"]
+      }
+    },
+    {
+      "id": "GD-005",
+      "version": "1.0.0",
+      "category": "edge_case",
+      "input": {
+        "query": "What is the capital of the Shadow Realm?",
+        "context": "No information about the Shadow Realm exists in the current knowledge base.",
+        "expectedEntities": [],
+        "expectedRelationships": []
+      },
+      "expectedOutput": {
+        "mustInclude": ["no information", "not found", "unknown"],
+        "mustNotInclude": ["definitely", "capital is"],
+        "minFaithfulness": 1.0,
+        "minEvidenceCoverage": 1.0
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Test handling of queries with no available context",
+        "tags": ["edge_case", "no_context"]
+      }
+    },
+    {
+      "id": "GD-006",
+      "version": "1.0.0",
+      "category": "generation",
+      "input": {
+        "query": "Describe the Ruby Mines location",
+        "context": "The Ruby Mines are located deep within the Bloodstone Mountains, approximately 200 miles north of the Crimson Empire's capital. The mines consist of a vast network of underground tunnels spanning over 50 square miles. The main entrance is guarded by the Imperial Mining Regiment. The mines reach depths of up to 2000 feet below the surface. The surrounding mountains are known for their reddish hue, giving the range its name.",
+        "expectedEntities": ["Ruby Mines", "Bloodstone Mountains"],
+        "expectedRelationships": ["LOCATED_IN"]
+      },
+      "expectedOutput": {
+        "mustInclude": [
+          "Bloodstone Mountains",
+          "underground tunnels",
+          "Imperial Mining Regiment",
+          "2000 feet"
+        ],
+        "mustNotInclude": ["Azure Kingdom", "underwater", "abandoned"],
+        "minFaithfulness": 0.97,
+        "minEvidenceCoverage": 0.85
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Location description test",
+        "tags": ["location", "generation"]
+      }
+    },
+    {
+      "id": "GD-007",
+      "version": "1.0.0",
+      "category": "retrieval",
+      "input": {
+        "query": "Who rules the Crimson Empire?",
+        "context": "Emperor Valen has ruled the Crimson Empire since Year 1200, following his father Emperor Marcus's death. Valen is known for his strategic mind and expansionist policies. He ascended to the throne at age 30 and is now 50 years old. His reign has been marked by economic prosperity but also increased military aggression.",
+        "expectedEntities": ["Emperor Valen", "Crimson Empire"],
+        "expectedRelationships": ["RULES"]
+      },
+      "expectedOutput": {
+        "mustInclude": ["Emperor Valen", "1200", "50 years old"],
+        "mustNotInclude": ["Emperor Marcus", "currently rules"],
+        "minFaithfulness": 0.98,
+        "minEvidenceCoverage": 0.9
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Simple retrieval test for faction leadership",
+        "tags": ["retrieval", "faction", "leadership"]
+      }
+    },
+    {
+      "id": "GD-008",
+      "version": "1.0.0",
+      "category": "consistency",
+      "input": {
+        "query": "What magical abilities does Lyra Moonwhisper possess?",
+        "context": "Lyra Moonwhisper is a master of divination magic, specializing in prophetic visions and scrying. She can perceive possible futures up to one year ahead, though the visions become less clear the further into the future she looks. She also practices basic elemental magic (water and air) and has studied enchantment theory. Lyra cannot perform necromancy or blood magic, as these are forbidden in the Azure Kingdom.",
+        "expectedEntities": ["Lyra Moonwhisper"],
+        "expectedRelationships": []
+      },
+      "expectedOutput": {
+        "mustInclude": [
+          "divination magic",
+          "prophetic visions",
+          "elemental magic",
+          "water and air"
+        ],
+        "mustNotInclude": ["necromancy", "blood magic", "fire magic"],
+        "minFaithfulness": 0.98,
+        "minEvidenceCoverage": 0.9
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Character abilities consistency test",
+        "tags": ["character", "magic", "consistency"]
+      }
+    },
+    {
+      "id": "GD-009",
+      "version": "1.0.0",
+      "category": "generation",
+      "input": {
+        "query": "Describe the trade relationship between factions",
+        "context": "Trade between the Crimson Empire and Azure Kingdom is officially forbidden by the Treaty of Red Dawn (1195). However, black market trade persists through smuggling networks operating in the Neutral Highlands. The Emerald Confederacy maintains open trade with both kingdoms, serving as an unofficial intermediary. The Confederacy exports grain and textiles, importing metals and gems from both nations.",
+        "expectedEntities": ["Crimson Empire", "Azure Kingdom", "Emerald Confederacy"],
+        "expectedRelationships": ["TRADES_WITH"]
+      },
+      "expectedOutput": {
+        "mustInclude": ["forbidden", "black market", "Emerald Confederacy", "intermediary"],
+        "mustNotInclude": [
+          "open trade agreement",
+          "peaceful commerce",
+          "between Empire and Kingdom"
+        ],
+        "minFaithfulness": 0.97,
+        "minEvidenceCoverage": 0.85
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Complex multi-faction relationship test",
+        "tags": ["faction", "trade", "relationships"]
+      }
+    },
+    {
+      "id": "GD-010",
+      "version": "1.0.0",
+      "category": "retrieval",
+      "input": {
+        "query": "When was the Peace Accord signed?",
+        "context": "The Peace Accord of 1195 was signed on the 15th day of Harvest Moon, ending the War of Two Banners. The signing ceremony took place in the Neutral Highlands, on neutral ground. Representatives from both the Crimson Empire and Azure Kingdom attended, with Lyra Moonwhisper serving as mediator.",
+        "expectedEntities": ["Peace Accord"],
+        "expectedRelationships": []
+      },
+      "expectedOutput": {
+        "mustInclude": ["1195", "15th day of Harvest Moon", "Neutral Highlands"],
+        "mustNotInclude": ["1180", "1200", "ongoing"],
+        "minFaithfulness": 0.98,
+        "minEvidenceCoverage": 0.9
+      },
+      "metadata": {
+        "createdBy": "ace-team",
+        "createdAt": "2025-11-21T00:00:00Z",
+        "description": "Temporal fact retrieval test",
+        "tags": ["retrieval", "temporal", "event"]
+      }
+    }
+  ]
+}

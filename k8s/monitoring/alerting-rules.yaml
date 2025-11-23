@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: monitoring
+data:
+  ace-alerts.yml: |
+    groups:
+      - name: ace-sla-alerts
+        rules:
+          # Latency SLA Breach (P95 > 500ms)
+          - alert: HighLatencyP95
+            expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=~"ace-.*"}[5m])) by (le, job)) > 0.5
+            for: 5m
+            labels:
+              severity: critical
+              team: ace
+            annotations:
+              summary: "High P95 latency detected"
+              description: "{{ $labels.job }} P95 latency is {{ $value | humanizeDuration }} (threshold: 500ms)"
+
+          # Faithfulness Score Below Threshold
+          - alert: LowFaithfulnessScore
+            expr: avg(ace_evaluation_faithfulness_score) < 0.97
+            for: 10m
+            labels:
+              severity: critical
+              team: ace
+            annotations:
+              summary: "Faithfulness score below threshold"
+              description: "Average faithfulness score is {{ $value | humanizePercentage }} (threshold: 97%)"
+
+          # High Error Rate
+          - alert: HighErrorRate
+            expr: sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) > 0.05
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "High error rate detected"
+              description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+          # Service Down
+          - alert: ServiceDown
+            expr: up{job=~"ace-.*"} == 0
+            for: 1m
+            labels:
+              severity: critical
+              team: ace
+            annotations:
+              summary: "ACE service is down"
+              description: "{{ $labels.job }} has been down for more than 1 minute"
+
+      - name: ace-performance-alerts
+        rules:
+          # Low Throughput
+          - alert: LowThroughput
+            expr: sum(rate(http_requests_total{job=~"ace-.*"}[5m])) < 100
+            for: 10m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "Low request throughput"
+              description: "Request rate is {{ $value | humanize }} req/s (expected: >100 req/s)"
+
+          # High Memory Usage
+          - alert: HighMemoryUsage
+            expr: container_memory_usage_bytes{namespace="ace"} / container_spec_memory_limit_bytes{namespace="ace"} > 0.9
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "High memory usage detected"
+              description: "{{ $labels.pod }} memory usage is {{ $value | humanizePercentage }}"
+
+          # High CPU Usage
+          - alert: HighCPUUsage
+            expr: rate(container_cpu_usage_seconds_total{namespace="ace"}[5m]) / container_spec_cpu_quota{namespace="ace"} * 100000 > 80
+            for: 10m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "High CPU usage detected"
+              description: "{{ $labels.pod }} CPU usage is above 80%"
+
+          # Slow LLM Inference
+          - alert: SlowLLMInference
+            expr: histogram_quantile(0.95, sum(rate(ace_llm_inference_duration_seconds_bucket[5m])) by (le)) > 30
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "Slow LLM inference detected"
+              description: "P95 LLM inference time is {{ $value | humanizeDuration }}"
+
+      - name: ace-database-alerts
+        rules:
+          # Neo4j Connection Issues
+          - alert: Neo4jConnectionFailure
+            expr: ace_neo4j_connection_errors_total > 0
+            for: 2m
+            labels:
+              severity: critical
+              team: ace
+            annotations:
+              summary: "Neo4j connection errors"
+              description: "Neo4j connection errors detected in the last 2 minutes"
+
+          # Slow Neo4j Queries
+          - alert: SlowNeo4jQueries
+            expr: histogram_quantile(0.95, sum(rate(ace_neo4j_query_duration_seconds_bucket[5m])) by (le)) > 1
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "Slow Neo4j queries"
+              description: "P95 Neo4j query time is {{ $value | humanizeDuration }}"
+
+          # Qdrant Search Latency
+          - alert: SlowVectorSearch
+            expr: histogram_quantile(0.95, sum(rate(ace_qdrant_search_duration_seconds_bucket[5m])) by (le)) > 0.5
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "Slow vector search"
+              description: "P95 Qdrant search time is {{ $value | humanizeDuration }}"
+
+      - name: ace-agent-alerts
+        rules:
+          # Agent Failure Rate
+          - alert: HighAgentFailureRate
+            expr: sum(rate(ace_agent_executions_total{status="failed"}[5m])) / sum(rate(ace_agent_executions_total[5m])) > 0.1
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "High agent failure rate"
+              description: "{{ $labels.agent }} failure rate is {{ $value | humanizePercentage }}"
+
+          # Validation Loop Exhaustion
+          - alert: ValidationLoopExhausted
+            expr: sum(rate(ace_validation_max_iterations_reached_total[5m])) > 0
+            for: 5m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "Validation loops reaching max iterations"
+              description: "Workflows are frequently hitting max validation iterations"
+
+          # Consistency Check Failures
+          - alert: ConsistencyCheckFailures
+            expr: sum(rate(ace_consistency_check_failed_total[5m])) / sum(rate(ace_consistency_check_total[5m])) > 0.2
+            for: 10m
+            labels:
+              severity: warning
+              team: ace
+            annotations:
+              summary: "High consistency check failure rate"
+              description: "Consistency check failure rate is {{ $value | humanizePercentage }}"

@@ -1,6 +1,7 @@
 import { createLogger } from '@ace/shared-logging';
 import type { Context, Next } from 'hono';
 import { Hono } from 'hono';
+import { executeWorkflow } from './agents/workflow';
 
 const logger = createLogger('inference-service');
 
@@ -26,13 +27,36 @@ app.get('/health', (c: Context) =>
 );
 
 app.post('/workflow/run', async (c: Context) => {
-  const payload = await c.req.json().catch(() => ({}));
-  logger.info('workflow request received', { payload });
+  try {
+    const payload = await c.req.json();
+    const { query, sessionId } = payload;
 
-  return c.json({
-    message: 'Workflow execution stub',
-    received: payload,
-  });
+    if (!query) {
+      return c.json({ error: 'Query is required' }, 400);
+    }
+
+    logger.info('workflow request received', { query, sessionId });
+
+    // Execute the LangGraph workflow
+    const result = await executeWorkflow(query, sessionId);
+
+    logger.info('workflow completed', {
+      success: result.success,
+      iterations: result.iterations,
+      errors: result.errors.length,
+    });
+
+    return c.json(result);
+  } catch (error) {
+    logger.error('workflow execution failed', { error });
+    return c.json(
+      {
+        error: 'Workflow execution failed',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      500,
+    );
+  }
 });
 
 const port = Number(Bun.env.INFERENCE_SERVICE_PORT ?? 3100);

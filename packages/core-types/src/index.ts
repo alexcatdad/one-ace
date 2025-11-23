@@ -1,4 +1,6 @@
 export * from './enums';
+export * from './evaluation';
+export * from './metrics';
 export * from './relationships';
 export * from './schemas/CharacterSchema';
 export * from './schemas/EventSchema';
